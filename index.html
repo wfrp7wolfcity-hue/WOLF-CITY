@@ -1,0 +1,645 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0b0714">
+<title>WOLF CITY | مركز القوانين</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap');
+
+:root {
+  --purple:#8b5cf6;
+  --purple-light:#b69aff;
+  --bg:#0b0714;
+  --panel:#151020;
+  --border:#302044;
+  --text:#f5efff;
+  --muted:#a99bbd;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:'Cairo',sans-serif;
+  color:var(--text);
+  background:var(--bg);
+  min-height:100vh;
+}
+button,input{font:inherit}
+button{-webkit-tap-highlight-color:transparent}
+
+#backgroundVideo{
+  position:fixed;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  z-index:-3;
+  opacity:.27;
+  pointer-events:none;
+}
+.background-overlay{
+  position:fixed;
+  inset:0;
+  z-index:-2;
+  pointer-events:none;
+  background:
+    radial-gradient(ellipse at top,#291344aa,transparent 60%),
+    linear-gradient(135deg,#090611d9,#130b20e8,#080610f2);
+}
+.background-glow{
+  position:fixed;
+  width:230px;
+  height:230px;
+  border-radius:50%;
+  background:#8b5cf6;
+  filter:blur(120px);
+  opacity:.16;
+  pointer-events:none;
+  z-index:-1;
+  animation:glowMove 8s ease-in-out infinite alternate;
+}
+.background-glow.one{top:12%;right:-130px}
+.background-glow.two{bottom:12%;left:-140px;animation-delay:-4s}
+
+@keyframes glowMove{
+  from{transform:translateY(-20px)}
+  to{transform:translateY(35px)}
+}
+@keyframes float{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-7px)}
+}
+@keyframes appear{
+  from{opacity:0;transform:translateY(9px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+header{
+  text-align:center;
+  padding:35px 18px 28px;
+  border-bottom:1px solid var(--border);
+  background:#0c0815c9;
+  backdrop-filter:blur(12px);
+}
+.logo{
+  width:76px;
+  height:76px;
+  border-radius:22px;
+  display:grid;
+  place-items:center;
+  margin:0 auto 14px;
+  background:linear-gradient(145deg,#a855f7,#5426a5);
+  box-shadow:0 0 35px #8b5cf64d;
+  animation:float 3s ease-in-out infinite;
+}
+.logo img{
+  width:48px;
+  height:48px;
+  object-fit:contain;
+}
+h1{
+  margin:0;
+  font-size:clamp(25px,5vw,39px);
+  font-weight:900;
+  letter-spacing:1px;
+}
+header p{margin:7px 0 0;color:var(--muted);font-size:14px}
+
+.container{width:min(1000px,92%);margin:28px auto 50px}
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:12px;
+  margin-bottom:22px;
+}
+.stat{
+  background:#171020eF;
+  border:1px solid var(--border);
+  padding:15px;
+  text-align:center;
+  border-radius:15px;
+  transition:.2s;
+}
+.stat:hover{border-color:#8050bb}
+.stat strong{
+  display:block;
+  font-size:25px;
+  color:var(--purple-light);
+}
+.stat span{font-size:12px;color:var(--muted)}
+
+.search-wrap{position:relative}
+.search-icon{
+  position:absolute;
+  right:15px;
+  top:50%;
+  transform:translateY(-50%);
+  width:27px;
+  height:27px;
+  object-fit:contain;
+  pointer-events:none;
+}
+.search-wrap input{
+  width:100%;
+  background:#151020f2;
+  border:1px solid var(--border);
+  padding:14px 54px 14px 16px;
+  border-radius:14px;
+  color:white;
+  outline:none;
+  font:inherit;
+  transition:.25s;
+}
+.search-wrap input:focus{
+  border-color:var(--purple);
+  box-shadow:0 0 20px #8b5cf626;
+}
+.search-wrap input::placeholder{color:#9686aa}
+
+.filters{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:10px;
+  padding:16px 0;
+}
+.filter{
+  min-width:0;
+  min-height:82px;
+  display:flex;
+  align-items:center;
+  justify-content:flex-start;
+  gap:10px;
+  text-align:right;
+  border:1px solid var(--border);
+  color:#e3d7f2;
+  background:linear-gradient(135deg,#171020f5,#110b1bf5);
+  padding:12px;
+  border-radius:14px;
+  cursor:pointer;
+  font-family:inherit;
+  transition:background .22s,border-color .22s,transform .22s,box-shadow .22s;
+  position:relative;
+  overflow:hidden;
+}
+.filter::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(110deg,transparent,#b69aff13,transparent);
+  transform:translateX(120%);
+  transition:transform .45s;
+}
+.filter:hover::before{transform:translateX(-120%)}
+.filter:hover{
+  border-color:#8050bb;
+  transform:translateY(-2px);
+}
+.filter.active{
+  background:linear-gradient(135deg,#6938b1,#392052);
+  border-color:var(--purple-light);
+  color:white;
+  box-shadow:0 0 20px #8b5cf629;
+}
+.filter.active::after{
+  content:"";
+  height:3px;
+  position:absolute;
+  bottom:0;
+  right:12px;
+  left:12px;
+  border-radius:5px 5px 0 0;
+  background:var(--purple-light);
+  box-shadow:0 0 10px var(--purple);
+}
+.filter img{
+  width:36px;
+  height:36px;
+  flex-shrink:0;
+  object-fit:contain;
+  position:relative;
+}
+.filter .filter-text{
+  font-size:12px;
+  line-height:1.7;
+  position:relative;
+}
+.filter .filter-text small{
+  display:block;
+  color:var(--muted);
+  font-size:10px;
+}
+.filter.active .filter-text small{color:#e0d0ff}
+
+.section-title{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin:25px 0 14px;
+  padding-bottom:14px;
+  border-bottom:1px solid var(--border);
+}
+.section-title h2{margin:0;font-size:19px}
+.section-title span{color:var(--muted);font-size:11px}
+
+.rules{display:flex;flex-direction:column;gap:12px}
+.rule{
+  background:linear-gradient(120deg,#171020f7,#110b1bf7);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:17px 18px;
+  animation:appear .3s ease both;
+  transition:border-color .2s,transform .2s;
+  position:relative;
+  overflow:hidden;
+}
+.rule::before{
+  content:"";
+  position:absolute;
+  right:0;
+  top:0;
+  bottom:0;
+  width:3px;
+  background:linear-gradient(180deg,var(--purple-light),#6333a6);
+}
+.rule:hover{border-color:#8050bb;transform:translateX(-2px)}
+.rule[hidden]{display:none!important}
+.rule h3{font-size:15px;margin:0 0 7px;color:var(--purple-light)}
+.rule p{margin:0;line-height:1.9;font-size:14px;color:#d6cde1}
+.tag{
+  display:inline-block;
+  font-size:10px;
+  padding:3px 9px;
+  border-radius:7px;
+  background:#8b5cf621;
+  color:#c7aaff;
+  margin-bottom:8px;
+}
+.empty{
+  display:none;
+  text-align:center;
+  padding:35px 15px;
+  color:var(--muted);
+  background:var(--panel);
+  border:1px dashed var(--border);
+  border-radius:15px;
+}
+.empty img{
+  width:35px;
+  height:35px;
+  object-fit:contain;
+  margin-bottom:8px;
+}
+footer{
+  text-align:center;
+  padding:22px;
+  border-top:1px solid var(--border);
+  color:var(--muted);
+  font-size:12px;
+  background:#0c0815a8;
+}
+footer strong{color:var(--purple-light)}
+
+@media(max-width:700px){
+  .filters{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+  .filter{min-height:78px;padding:10px}
+  .filter img{width:33px;height:33px}
+  .filter .filter-text{font-size:12px}
+}
+@media(max-width:390px){
+  .container{width:93%}
+  .stats{gap:7px}
+  .stat{padding:11px 5px}
+  .stat strong{font-size:21px}
+  .stat span{font-size:10px}
+  .rule{padding:14px}
+  .section-title span{font-size:9px}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation-duration:.01ms!important;
+    transition-duration:.01ms!important;
+    scroll-behavior:auto!important;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<video id="backgroundVideo" autoplay muted loop playsinline>
+  <source src="https://www.dropbox.com/scl/fi/zvtm87se8y2e981sf9you/lv_0_.mp4?rlkey=2jq63e7fnsfw5p7a0qe61y1kn&raw=1" type="video/mp4">
+</video>
+<div class="background-overlay"></div>
+<div class="background-glow one"></div>
+<div class="background-glow two"></div>
+
+<header>
+  <div class="logo">
+    <img src="https://www.dropbox.com/scl/fi/kunu8ck266fwiujhwsa8b/file_000000002c3c820a95e90e7bb610021d.png?rlkey=l0hcp41q3af5uctd4zs4e57ig&raw=1" alt="WOLF CITY">
+  </div>
+  <h1>WOLF CITY <span style="color:#a78bfa">RP</span></h1>
+  <p>مركز القوانين والأنظمة الرسمية للمدينة</p>
+</header>
+
+<main class="container">
+
+  <div class="stats">
+    <div class="stat">
+      <strong id="totalCount">0</strong>
+      <span>إجمالي القوانين</span>
+    </div>
+    <div class="stat">
+      <strong id="visibleCount">0</strong>
+      <span>القوانين المعروضة</span>
+    </div>
+    <div class="stat">
+      <strong>WF</strong>
+      <span>نظام المدينة</span>
+    </div>
+  </div>
+
+  <div class="search-wrap">
+    <img class="search-icon" src="https://www.dropbox.com/scl/fi/vikqnhy1t86baooyrmsgh/file_00000000a598820abfe2814f0ac0d20f.png?rlkey=0aoz38ms49hexucqe4srracpf&raw=1" alt="">
+    <input id="searchInput" type="search"
+      placeholder="ابحث عن قانون... مثال: RDM أو الحياة الجديدة"
+      autocomplete="off">
+  </div>
+
+  <nav class="filters" id="filters" aria-label="أقسام القوانين">
+    <button type="button" class="filter active" data-category="all" aria-pressed="true">
+      <img src="https://www.dropbox.com/scl/fi/kunu8ck266fwiujhwsa8b/file_000000002c3c820a95e90e7bb610021d.png?rlkey=l0hcp41q3af5uctd4zs4e57ig&raw=1" alt="">
+      <span class="filter-text">جميع القوانين<small>كل الأقسام</small></span>
+    </button>
+    <button type="button" class="filter" data-category="general" aria-pressed="false">
+      <img src="https://www.dropbox.com/scl/fi/kunu8ck266fwiujhwsa8b/file_000000002c3c820a95e90e7bb610021d.png?rlkey=l0hcp41q3af5uctd4zs4e57ig&raw=1" alt="">
+      <span class="filter-text">القوانين العامة<small>قواعد المدينة</small></span>
+    </button>
+    <button type="button" class="filter" data-category="nlr" aria-pressed="false">
+      <img src="https://www.dropbox.com/scl/fi/5alrlcqoydc8yg5kf6ea8/file_000000005850820aba9fce9b4af7300b.png?rlkey=l30uf9bcea5ivrrcup50w0f1z&raw=1" alt="">
+      <span class="filter-text">الحياة الجديدة<small>NLR</small></span>
+    </button>
+    <button type="button" class="filter" data-category="rdm" aria-pressed="false">
+      <img src="https://www.dropbox.com/scl/fi/lo4ncbkf9536by1n7zaop/file_00000000c7fc820a90474d48ebd61cb0.png?rlkey=bn9a1i8rs1pf3nhpwfgl1nen3&raw=1" alt="">
+      <span class="filter-text">RDM / VDM<small>الاعتداءات</small></span>
+    </button>
+    <button type="button" class="filter" data-category="rp" aria-pressed="false">
+      <img src="https://www.dropbox.com/scl/fi/5alrlcqoydc8yg5kf6ea8/file_000000005850820aba9fce9b4af7300b.png?rlkey=l30uf9bcea5ivrrcup50w0f1z&raw=1" alt="">
+      <span class="filter-text">قوانين الرول بلاي<small>مصطلحات RP</small></span>
+    </button>
+    <button type="button" class="filter" data-category="police" aria-pressed="false">
+      <img src="https://www.dropbox.com/scl/fi/xxm9ptxh36bl04umkjoly/file_0000000003a8820aa89dbdf054006a0b.png?rlkey=fgkxh0khw0sc4zfsy18f6ejpe&raw=1" alt="">
+      <span class="filter-text">الشرطة<small>LS PD</small></span>
+    </button>
+    <button type="button" class="filter" data-category="ems" aria-pressed="false">
+      <img src="https://www.dropbox.com/scl/fi/34g40z0bicse7jv6lzlh7/file_000000003060820a9b33dab8b269b245.png?rlkey=tlwzw9dd41n92g0b9cvco0d9g&raw=1" alt="">
+      <span class="filter-text">الإسعاف<small>EMS</small></span>
+    </button>
+    <button type="button" class="filter" data-category="admin" aria-pressed="false">
+      <img src="https://www.dropbox.com/scl/fi/igb05pvnsl0ktjw8mkbs8/file_00000000f89c820ab3fe15ccc8cf4e07.png?rlkey=t7kc7fxird4njt5jnzwypvn82&raw=1" alt="">
+      <span class="filter-text">الإدارة والرقابة<small>النظام الإداري</small></span>
+    </button>
+  </nav>
+
+  <div class="section-title">
+    <h2 id="sectionTitle">جميع القوانين</h2>
+    <span>WOLF CITY • RULEBOOK</span>
+  </div>
+
+  <div class="rules" id="rulesList">
+
+    <article class="rule" data-category="general">
+      <span class="tag">القوانين العامة</span>
+      <h3>1. احترام اللاعبين</h3>
+      <p>يجب احترام جميع اللاعبين والابتعاد عن السب والشتم والإساءة داخل المدينة.</p>
+    </article>
+
+    <article class="rule" data-category="general">
+      <span class="tag">القوانين العامة</span>
+      <h3>2. استغلال الثغرات</h3>
+      <p>يمنع استغلال الأخطاء البرمجية أو الثغرات للحصول على أموال أو امتيازات غير مستحقة.</p>
+    </article>
+
+    <article class="rule" data-category="general">
+      <span class="tag">القوانين العامة</span>
+      <h3>3. انتحال الشخصيات</h3>
+      <p>يمنع انتحال شخصية إدارية أو أمنية أو استخدام صلاحيات لا يمتلكها اللاعب.</p>
+    </article>
+
+    <article class="rule" data-category="general">
+      <span class="tag">القوانين العامة</span>
+      <h3>4. الالتزام بالتعليمات</h3>
+      <p>يجب الالتزام بتعليمات الإدارة وعدم التحايل على أنظمة المدينة.</p>
+    </article>
+
+    <article class="rule" data-category="nlr">
+      <span class="tag">NLR</span>
+      <h3>1. قانون الحياة الجديدة</h3>
+      <p>عند الإغماء الكامل، لا يجوز الكلام أو الحركة أو تنفيذ أي فعل حتى يتم التعامل مع الحالة وفق نظام المدينة.</p>
+    </article>
+
+    <article class="rule" data-category="nlr">
+      <span class="tag">NLR</span>
+      <h3>2. تذكر الأحداث</h3>
+      <p>تُحدد إمكانية تذكر الأحداث السابقة بحسب طريقة الإنعاش والسيناريو المعتمد في قوانين المدينة.</p>
+    </article>
+
+    <article class="rule" data-category="rdm">
+      <span class="tag">RDM</span>
+      <h3>1. القتل العشوائي</h3>
+      <p>يمنع الاعتداء على اللاعبين أو قتلهم دون سبب واضح ومبرر داخل الرول بلاي.</p>
+    </article>
+
+    <article class="rule" data-category="rdm">
+      <span class="tag">VDM</span>
+      <h3>2. الدهس العشوائي</h3>
+      <p>يمنع استخدام المركبة لدهس اللاعبين عمدًا دون سبب مقبول ضمن أحداث الرول بلاي.</p>
+    </article>
+
+    <article class="rule" data-category="rp">
+      <span class="tag">POWER GAMING</span>
+      <h3>1. الباور قيمنج</h3>
+      <p>يمنع القيام بأفعال غير واقعية أو فرض نتائج على لاعب آخر دون إعطائه فرصة للتفاعل.</p>
+    </article>
+
+    <article class="rule" data-category="rp">
+      <span class="tag">META GAMING</span>
+      <h3>2. الميتا قيمنج</h3>
+      <p>يمنع استخدام المعلومات التي تم الحصول عليها خارج اللعبة لتحقيق أفضلية داخل الرول بلاي.</p>
+    </article>
+
+    <article class="rule" data-category="rp">
+      <span class="tag">FEAR RP</span>
+      <h3>3. الخوف على الحياة</h3>
+      <p>يجب على الشخصية التصرف بما يتناسب مع الخطر الذي تواجهه والمحافظة على حياتها داخل السيناريو.</p>
+    </article>
+
+    <article class="rule" data-category="rp">
+      <span class="tag">FAIL RP</span>
+      <h3>4. فشل الرول بلاي</h3>
+      <p>يمنع القيام بتصرفات تكسر واقعية المشهد أو تتعارض مع منطق الشخصية والأحداث.</p>
+    </article>
+
+    <article class="rule" data-category="rp">
+      <span class="tag">COMBAT LOGGING</span>
+      <h3>5. الخروج أثناء السيناريو</h3>
+      <p>يمنع الخروج من المدينة عمدًا للتهرب من مواجهة أو توقيف أو سيناريو قائم.</p>
+    </article>
+
+    <article class="rule" data-category="police">
+      <span class="tag">الشرطة</span>
+      <h3>1. استخدام الصلاحيات</h3>
+      <p>يجب على أفراد الشرطة استخدام صلاحياتهم وفق الأنظمة وعدم استغلال الرتبة لتحقيق مصالح شخصية.</p>
+    </article>
+
+    <article class="rule" data-category="police">
+      <span class="tag">الشرطة</span>
+      <h3>2. التعامل مع المواطنين</h3>
+      <p>يجب التعامل باحترام مع المواطنين واتباع الإجراءات المعتمدة أثناء التفتيش والتوقيف.</p>
+    </article>
+
+    <article class="rule" data-category="police">
+      <span class="tag">الشرطة</span>
+      <h3>3. المركبات والمعدات</h3>
+      <p>تُستخدم مركبات الشرطة ومعداتها لأغراض العمل الأمني فقط، مع الالتزام بتعليمات القسم.</p>
+    </article>
+
+    <article class="rule" data-category="ems">
+      <span class="tag">الإسعاف</span>
+      <h3>1. الحياد المهني</h3>
+      <p>يجب على المسعف تقديم المساعدة للمصابين دون تمييز أو استغلال عمله لتصفية الخلافات.</p>
+    </article>
+
+    <article class="rule" data-category="ems">
+      <span class="tag">الإسعاف</span>
+      <h3>2. احترام موقع الحادث</h3>
+      <p>على المسعف مراعاة سلامة موقع الحادث والتنسيق مع الجهات المختصة عند الحاجة.</p>
+    </article>
+
+    <article class="rule" data-category="ems">
+      <span class="tag">الإسعاف</span>
+      <h3>3. المحافظة على المعدات</h3>
+      <p>تستخدم مركبات الإسعاف ومعداته للأغراض الطبية والإنقاذية فقط.</p>
+    </article>
+
+    <article class="rule" data-category="ems">
+      <span class="tag">الإسعاف</span>
+      <h3>4. الالتزام بالزي الرسمي</h3>
+      <p>يلتزم المسعف بالزي المعتمد أثناء أداء مهامه، ما لم تسمح الإدارة باستثناء محدد.</p>
+    </article>
+
+    <article class="rule" data-category="admin">
+      <span class="tag">الإدارة والرقابة</span>
+      <h3>1. النزاهة الإدارية</h3>
+      <p>يمنع استغلال الصلاحيات الإدارية لمصلحة شخصية أو للتأثير غير العادل على اللاعبين.</p>
+    </article>
+
+    <article class="rule" data-category="admin">
+      <span class="tag">الإدارة والرقابة</span>
+      <h3>2. استقبال الشكاوى</h3>
+      <p>تتم مراجعة الشكاوى والأدلة بهدوء وحياد، مع عدم إصدار العقوبات دون التحقق من الحالة.</p>
+    </article>
+
+    <article class="rule" data-category="admin">
+      <span class="tag">الإدارة والرقابة</span>
+      <h3>3. سرية المعلومات</h3>
+      <p>يمنع نشر المعلومات الإدارية الخاصة أو استغلالها خارج حدود المسؤولية.</p>
+    </article>
+
+  </div>
+
+  <div class="empty" id="emptyMessage">
+    <img src="https://www.dropbox.com/scl/fi/vikqnhy1t86baooyrmsgh/file_00000000a598820abfe2814f0ac0d20f.png?rlkey=0aoz38ms49hexucqe4srracpf&raw=1" alt="">
+    <br>
+    <strong>ما لقينا أي قانون</strong>
+    <p>جرّب كلمة ثانية أو اختر قسمًا مختلفًا.</p>
+  </div>
+
+</main>
+
+<footer>
+  <strong>WOLF CITY RP</strong>
+  <div>جميع الحقوق محفوظة © <span id="year"></span></div>
+</footer>
+
+<script>
+(() => {
+  "use strict";
+
+  const searchInput = document.getElementById("searchInput");
+  const rules = [...document.querySelectorAll("#rulesList .rule")];
+  const filterButtons = [...document.querySelectorAll(".filter[data-category]")];
+  const emptyMessage = document.getElementById("emptyMessage");
+
+  const categoryNames = {
+    all: "جميع القوانين",
+    general: "القوانين العامة",
+    nlr: "قوانين الحياة الجديدة NLR",
+    rdm: "قوانين RDM / VDM",
+    rp: "قوانين الرول بلاي",
+    police: "قوانين الشرطة",
+    ems: "قوانين الإسعاف",
+    admin: "قوانين الإدارة والرقابة"
+  };
+
+  let activeCategory = "all";
+
+  function updateRules() {
+    const query = searchInput.value.trim().toLocaleLowerCase();
+    let visible = 0;
+
+    rules.forEach(rule => {
+      const categoryMatches =
+        activeCategory === "all" ||
+        rule.dataset.category === activeCategory;
+
+      const searchMatches =
+        rule.textContent.toLocaleLowerCase().includes(query);
+
+      const show = categoryMatches && searchMatches;
+      rule.hidden = !show;
+
+      if (show) visible++;
+    });
+
+    filterButtons.forEach(button => {
+      const selected = button.dataset.category === activeCategory;
+      button.classList.toggle("active", selected);
+      button.setAttribute("aria-pressed", String(selected));
+    });
+
+    document.getElementById("totalCount").textContent = rules.length;
+    document.getElementById("visibleCount").textContent = visible;
+    document.getElementById("sectionTitle").textContent =
+      categoryNames[activeCategory];
+
+    emptyMessage.style.display = visible === 0 ? "block" : "none";
+  }
+
+  filterButtons.forEach(button => {
+    button.addEventListener("click", () => {
+      const selectedCategory = button.dataset.category;
+
+      if (!Object.prototype.hasOwnProperty.call(categoryNames, selectedCategory)) {
+        return;
+      }
+
+      activeCategory = selectedCategory;
+      updateRules();
+    });
+  });
+
+  searchInput.addEventListener("input", updateRules);
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  updateRules();
+})();
+</script>
+
+</body>
+</html>
